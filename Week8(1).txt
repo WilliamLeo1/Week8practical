@@ -1,0 +1,65 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Feb  2 16:13:40 2021
+
+@author: bootl
+"""
+
+import random
+import operator
+import matplotlib.pyplot
+import agentframework
+import csv
+
+num_of_agents=200
+num_of_iterations=20
+neighbourhood=30
+
+# Create the environment
+environment = []
+f = open("in.txt")
+for line in f:
+    parsed_line = str.split(line,",")
+    rowlist = []
+    for word in parsed_line:
+        rowlist.append(float(word))
+    environment.append(rowlist)
+matplotlib.pyplot.imshow(environment)
+matplotlib.pyplot.show()    
+f.close()
+
+# Create the agents
+agents=[]
+for i in range(num_of_agents):   
+    agents.append(agentframework.Agent(i, environment, agents))
+
+# Main run
+for j in range(num_of_iterations):
+    for i in range(num_of_agents):
+        print(agents[i])
+        #print("x", agents[i].x, "y", agents[i].y)
+        agents[i].move()
+        #print("x", agents[i].x, "y", agents[i].y)
+        print(agents[i])
+        agents[i].eat()
+        agents[i].share_with_neighbours(neighbourhood)
+        print(agents[i])
+
+# Print out all agents
+print("Print out all agents")
+#print(agents)
+for i in range(num_of_agents):
+    print(agents[i])
+
+
+# print(max(agents, key=operator.itemgetter(1)))
+
+# Plot the agents
+matplotlib.pyplot.ylim(0, 299)
+matplotlib.pyplot.xlim(0, 299)
+matplotlib.pyplot.imshow(environment)
+for i in range(num_of_agents):
+    matplotlib.pyplot.scatter(agents[i].x,agents[i].y)
+#a=max(agents, key=operator.itemgetter(1))
+#matplotlib.pyplot.scatter(a[0], a[1], color='green')
+matplotlib.pyplot.show()
